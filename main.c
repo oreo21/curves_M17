@@ -25,12 +25,16 @@ int main(int argc, char **argv) {
   /* print_matrix(make_rotZ(M_PI/4)); */
   /* printf("\n"); */
 
+  //print_matrix(make_hermite()), printf("\n");
+  //print_matrix(make_bezier()), printf("\n");
+
+
   if ( argc == 2 )
     parse_file( argv[1], transform, edges, s );
   else
     parse_file( "stdin", transform, edges, s );
 
-  
+
   free_matrix( edges );
   free_matrix( transform );
-}  
+}
