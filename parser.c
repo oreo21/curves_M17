@@ -85,6 +85,7 @@ void parse_file ( char * filename,
     double yvals[3];
     double zvals[4];
     struct matrix *tmp;
+    double radius;
     double theta;
     char axis;
 
@@ -148,15 +149,20 @@ void parse_file ( char * filename,
     }//end ident
 
     else if ( strncmp(line, "circle", strlen(line)) == 0 ) {
+      fgets(line, sizeof(line), f);
       printf("CIRCLE\t%s", line);
-
+      sscanf(line, "%lf %lf %lf %lf",
+       xvals, yvals, zvals, &radius);
+      add_circle(edges, xvals[0], yvals[0], zvals[0], radius, 0.01);
     }
 
     else if ( strncmp(line, "hermite", strlen(line)) == 0 ) {
+      fgets(line, sizeof(line), f);
       printf("HERMITE\t%s", line);
     }
 
     else if ( strncmp(line, "bezier", strlen(line)) == 0 ) {
+      fgets(line, sizeof(line), f);
       printf("BEZIER\t%s", line);
 
     }

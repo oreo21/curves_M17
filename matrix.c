@@ -60,8 +60,8 @@ struct matrix * generate_curve_coefs( double p1, double p2,
   (*c).m[0][0] = p1, (*c).m[0][1] = p2;
   (*c).m[0][2] = p3, (*c).m[0][3] = p4;
   struct matrix *t;
-  if (type == 0) struct matrix *t = make_hermite();
-  else struct matrix *t = make_bezier();
+  if (type == HERMITE) t = make_hermite();
+  else if (type == BEZIER) t = make_bezier();
   matrix_mult(t, c);
   return c;
 }
