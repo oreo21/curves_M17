@@ -23,5 +23,6 @@ parser.o: parser.c parser.h matrix.h draw.h display.h ml6.h
 
 run: main
 	./main script
+	./main myScript
 clean:
-	rm *.o *~ face.png main
+	rm *.o *~ face.png blinky.png main
