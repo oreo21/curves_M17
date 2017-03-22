@@ -20,11 +20,13 @@
 void add_circle( struct matrix * points,
 		 double cx, double cy, double cz,
 		 double r, double step ) {
-  double t, x, y;
-	for (t = 0.0; t <= 1.0; t += step){
-		x = r * cos(2 * M_PI * t) + cx;
-		y = r * sin(2 * M_PI * t) + cy;
-		add_point(points, x, y, cz);
+  double t, x0, y0, x1, y1;
+	for (t = 0.0; t < step; t++){
+		x0 = r * cos(2 * M_PI * t / step) + cx;
+		y0 = r * sin(2 * M_PI * t / step) + cy;
+		x1 = r * cos(2 * M_PI * (t+1) / step) + cx;
+		y1 = r * sin(2 * M_PI * (t+1) / step) + cy;
+		add_edge(points, x0, y0, 0.0, x1, y1, 0.0);
 	}
 }
 
@@ -52,8 +54,23 @@ void add_curve( struct matrix *points,
 		double x2, double y2,
 		double x3, double y3,
 		double step, int type ) {
+	double t, xA, yA, xB, yB, aX, bX, cX, dX, aY, bY, cY, dY;
+  struct matrix *mX = new_matrix(4, 1);
+	struct matrix *mY = new_matrix(4, 1);
+	ident(mX);
+	ident(mY);
+  mX = generate_curve_coefs(x0, x1, x2, x3, type);
+	mY = generate_curve_coefs(y0, y1, y2, y3, type);
+	aX = (*mX).m[0][0], bX = (*mX).m[1][0], cX = (*mX).m[2][0], dX = (*mX).m[3][0];
+	aY = (*mY).m[0][0], bY = (*mY).m[1][0], cY = (*mY).m[2][0], dY = (*mY).m[3][0];
+	for (t = 0.0; t < step; t++){
+		xA = aX * pow(t/step, 3) + bX * pow(t/step, 2) + cX * (t/step) + dX;
+		yA = aY * pow(t/step, 3) + bY * pow(t/step, 2) + cY * (t/step) + dY;
+		xB = aX * pow((t+1)/step, 3) + bX * pow((t+1)/step, 2) + cX * ((t+1)/step) + dX;
+		yB = aY * pow((t+1)/step, 3) + bY * pow((t+1)/step, 2) + cY * ((t+1)/step) + dY;
+		add_edge(points, xA, yA, 0.0, xB, yB, 0.0);
+	}
 }
-
 
 /*======== void add_point() ==========
 Inputs:   struct matrix * points

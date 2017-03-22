@@ -34,7 +34,7 @@ struct matrix * make_hermite() {
   (*t).m[0][0] = 2.0, (*t).m[0][1] = -2.0;
   (*t).m[0][2] = 1.0, (*t).m[0][3] = 1.0;
   (*t).m[1][0] = -3.0, (*t).m[1][1] = 3.0;
-  (*t).m[1][2] = -2.0, (*t).m[1][3] = 1.0;
+  (*t).m[1][2] = -2.0, (*t).m[1][3] = -1.0;
   (*t).m[2][2] = 1.0, (*t).m[3][0] = 1.0;
   (*t).m[3][3] = 0.0;
   return t;
@@ -57,8 +57,9 @@ struct matrix * make_hermite() {
 struct matrix * generate_curve_coefs( double p1, double p2,
 				      double p3, double p4, int type) {
   struct matrix *c = new_matrix(4, 1);
-  (*c).m[0][0] = p1, (*c).m[0][1] = p2;
-  (*c).m[0][2] = p3, (*c).m[0][3] = p4;
+  ident(c);
+  (*c).m[0][0] = p1, (*c).m[1][0] = p2;
+  (*c).m[2][0] = p3, (*c).m[3][0] = p4;
   struct matrix *t;
   if (type == HERMITE) t = make_hermite();
   else if (type == BEZIER) t = make_bezier();
